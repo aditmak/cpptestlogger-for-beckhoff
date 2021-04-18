@@ -29,7 +29,6 @@ int main()
     long float SetPos, ActPos;
     int SetVelo;
     double ActVelo;
-    int n = 0;
     
     //Operation
     try
