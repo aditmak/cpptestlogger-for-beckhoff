@@ -2,13 +2,11 @@
 //
 
 //Include General Libraries
-#include "pch.h"
 #include <iostream>
 #include <time.h>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
-#include <random>
 
 //Include ADS Libraries
 #include "Windows.h"
@@ -57,11 +55,16 @@ int main()
         
         if (nErr) {logger.error("AdsGetLocalAddress failed: {} -- Error Code", nErr);}
         
+        //Port Number
         pAddr->port = 0x8888;
+        
         logger.error("Welcome to C++ TwinCAT Logger");
         logger.info("***************************************************************");
         logger.error("Login started");
+        
         while (nErr == 0){
+            //Project specific changes go here!
+            //This code is for Phantom Robot (RWTH Aachen)
             nErr = AdsSyncReadWriteReq(pAddr, 1, 1, sizeof(SetPos), &SetPos, 0, NULL);
             if (nErr) logger.error("AdsSyncReadReq SetPos failed: {} -- Error Code", nErr);
             nErr = AdsSyncReadWriteReq(pAddr, 1, 3, sizeof(SetVelo), &SetVelo, 0, NULL);
@@ -70,9 +73,9 @@ int main()
             if (nErr) logger.error("AdsSyncReadReq ActPos failed: {} -- Error Code", nErr);
             nErr = AdsSyncReadWriteReq(pAddr, 1, 4, sizeof(ActVelo), &ActVelo, 0, NULL);
             if (nErr) logger.error("AdsSyncReadReq ActVelo failed: {} -- Error Code", nErr);
-            n++;
-            //logger.warn("Motor 1: SetPos: {}, ActPos: {} :::: SetVel: {}, ActVel: {}", SetPos, ActPos, SetVelo, ActVelo);
+            
             logger.warn("TimeDiff: {},   Index: {}", SetPos, SetVelo);
+            
             logger.warn("M1:  TimeinData: {} ActPos: {}",  ActVelo, ActPos);
             
             nErr = AdsSyncReadWriteReq(pAddr, 2, 1, sizeof(SetPos), &SetPos, 0, NULL);
@@ -83,8 +86,7 @@ int main()
             if (nErr) logger.error("AdsSyncReadReq ActPos failed: {} -- Error Code", nErr);
             nErr = AdsSyncReadWriteReq(pAddr, 2, 4, sizeof(ActVelo), &ActVelo, 0, NULL);
             if (nErr) logger.error("AdsSyncReadReq ActVelo failed: {} -- Error Code", nErr);
-            n++;
-            //logger.warn("Motor 2: SetPos: {}, ActPos: {} :::: SetVel: {}, ActVel: {}", SetPos, ActPos, SetVelo, ActVelo);
+            
             logger.warn("M2: TimeinData: {} ActPos: {}", ActVelo, ActPos);
 
             nErr = AdsSyncReadWriteReq(pAddr, 3, 1, sizeof(SetPos), &SetPos, 0, NULL);
@@ -95,8 +97,7 @@ int main()
             if (nErr) logger.error("AdsSyncReadReq ActPos failed: {} -- Error Code", nErr);
             nErr = AdsSyncReadWriteReq(pAddr, 3, 4, sizeof(ActVelo), &ActVelo, 0, NULL);
             if (nErr) logger.error("AdsSyncReadReq ActVelo failed: {} -- Error Code", nErr);
-            n++;
-            //logger.warn("Motor 3: SetPos: {}, ActPos: {} :::: SetVel: {}, ActVel: {}", SetPos, ActPos, SetVelo, ActVelo);
+            
             logger.warn("M3: TimeinData: {} ActPos: {}", ActVelo, ActPos);
             Sleep(2);
         }
